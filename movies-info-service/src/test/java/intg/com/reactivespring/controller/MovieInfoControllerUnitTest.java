@@ -112,6 +112,25 @@ public class MovieInfoControllerUnitTest {
                 });
     }
     @Test
+    void addMovieInfo_validationWithExceptionHandler() {
+        var newMovieInfo = new MovieInfo("aac3", "",
+                -2019, List.of("Leonardo DiCaprio, Al Pacino",
+                "Brad Pitt", "Margot Robbie", "Luke Perry"), LocalDate.parse("2019-07-26"));
+        webTestClient
+                .post()
+                .uri(MOVIE_INFO_URI)
+                .bodyValue(newMovieInfo)
+                .exchange()
+                .expectStatus()
+                .isBadRequest()
+                .expectBody(String.class)
+                .consumeWith(stringEntityExchangeResult -> {
+                    var response = stringEntityExchangeResult.getResponseBody();
+                    assert Objects.nonNull(response);
+                    assert Objects.equals(response, "MovieInfo Name must be present, Release year cannot be negative");
+                });
+    }
+    @Test
     void updateMovieInfo() {
         var newMovieInfo = new MovieInfo("aac3", "Once Upon a Time in Hollywood",
                 2019, List.of("Leonardo DiCaprio, Al Pacino",
