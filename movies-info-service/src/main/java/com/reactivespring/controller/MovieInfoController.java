@@ -30,8 +30,11 @@ public class MovieInfoController {
     }
     @GetMapping("movieinfos/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Mono<MovieInfo> getMovieInfoById(@NonNull @PathVariable String id) {
-        return movieInfoService.findMovieInfoById(id).log();
+    public Mono<ResponseEntity<MovieInfo>> getMovieInfoById(@NonNull @PathVariable String id) {
+        return movieInfoService
+                .findMovieInfoById(id)
+                .map(ResponseEntity.ok()::body)
+                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
     @PutMapping("movieinfos/{id}")
     public Mono<ResponseEntity<MovieInfo>> updateMovieInfoById(@RequestBody MovieInfo movieInfo, @NonNull @PathVariable String id) {

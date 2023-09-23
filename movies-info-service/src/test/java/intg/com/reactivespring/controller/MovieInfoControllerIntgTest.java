@@ -90,19 +90,14 @@ class MovieInfoControllerIntgTest {
                 .jsonPath("$.name").isEqualTo("Pulp Fiction");
     }
     @Test
-    void UnknownMovieInfoIdReturnsNullBody() {
+    void UnknownMovieInfoIdReturnsNotFoundStatus() {
         var movieInfoId = "unknown";
         webTestClient
                 .get()
                 .uri(MOVIE_INFO_URI + "/" + movieInfoId)
                 .exchange()
                 .expectStatus()
-                .is2xxSuccessful()
-                .expectBody(MovieInfo.class)
-                .consumeWith(movieInfoEntityExchangeResult -> {
-                    var desiredMovieInfo = movieInfoEntityExchangeResult.getResponseBody();
-                    assert Objects.isNull(desiredMovieInfo);
-                });
+                .isNotFound();
     }
     @Test
     void updateMovieInfo() {
