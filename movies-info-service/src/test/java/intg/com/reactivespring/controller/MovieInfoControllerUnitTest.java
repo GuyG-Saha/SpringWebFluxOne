@@ -114,8 +114,7 @@ public class MovieInfoControllerUnitTest {
     @Test
     void addMovieInfo_validationWithExceptionHandler() {
         var newMovieInfo = new MovieInfo("aac3", "",
-                -2019, List.of("Leonardo DiCaprio, Al Pacino",
-                "Brad Pitt", "Margot Robbie", "Luke Perry"), LocalDate.parse("2019-07-26"));
+                -2019, List.of(""), LocalDate.parse("2019-07-26"));
         webTestClient
                 .post()
                 .uri(MOVIE_INFO_URI)
@@ -127,7 +126,7 @@ public class MovieInfoControllerUnitTest {
                 .consumeWith(stringEntityExchangeResult -> {
                     var response = stringEntityExchangeResult.getResponseBody();
                     assert Objects.nonNull(response);
-                    assert Objects.equals(response, "MovieInfo Name must be present, Release year cannot be negative");
+                    assert Objects.equals(response, "Cast should be present, MovieInfo Name must be present, Release year cannot be negative");
                 });
     }
     @Test

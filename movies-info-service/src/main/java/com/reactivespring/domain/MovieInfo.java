@@ -24,6 +24,6 @@ public class MovieInfo {
     @NotNull
     @Positive(message = "Release year cannot be negative")
     private Integer year;
-    private List<String> cast;
+    private List<@NotBlank(message = "Cast should be present") String> cast;
     private LocalDate releaseDate;
 }

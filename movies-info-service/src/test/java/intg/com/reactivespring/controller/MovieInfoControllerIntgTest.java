@@ -125,6 +125,18 @@ class MovieInfoControllerIntgTest {
                 });
     }
     @Test
+    void updateMovieInfoNotFound() {
+        var updatedMovieInfoWrongId = new MovieInfo("sg6", "Batman Begins II", 2008, List.of("Christian Bale",
+                "Michael Cane"), LocalDate.parse("2008-09-13"));
+        webTestClient
+                .put()
+                .uri(MOVIE_INFO_URI + "/" + updatedMovieInfoWrongId.getId())
+                .bodyValue(updatedMovieInfoWrongId)
+                .exchange()
+                .expectStatus()
+                .isNotFound();
+    }
+    @Test
     void deleteBatmanMovieInfo() {
         var movieInfoId = "sg5";
         webTestClient

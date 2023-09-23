@@ -5,6 +5,7 @@ import com.reactivespring.service.MovieInfoService;
 import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Flux;
@@ -33,8 +34,11 @@ public class MovieInfoController {
         return movieInfoService.findMovieInfoById(id).log();
     }
     @PutMapping("movieinfos/{id}")
-    public Mono<MovieInfo> updateMovieInfoById(@RequestBody MovieInfo movieInfo, @NonNull @PathVariable String id) {
-        return movieInfoService.updateMovieInfo(movieInfo, id);
+    public Mono<ResponseEntity<MovieInfo>> updateMovieInfoById(@RequestBody MovieInfo movieInfo, @NonNull @PathVariable String id) {
+        return movieInfoService
+                .updateMovieInfo(movieInfo, id)
+                .map(ResponseEntity.ok()::body)
+                .switchIfEmpty(Mono.just(ResponseEntity.notFound().build()));
     }
     @DeleteMapping("movieinfos/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
