@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.lang.reflect.Array;
 import java.time.LocalDate;
@@ -48,15 +49,28 @@ class MovieInfoControllerIntgTest {
     }
 
     @Test
-    void GetAllMovieInfosReturnsFourObjects() {
+    void GetAllMovieInfosReturnsList() {
         webTestClient
                 .get()
                 .uri(MOVIE_INFO_URI)
                 .exchange()
                 .expectStatus()
                 .is2xxSuccessful()
+                .expectBodyList(MovieInfo.class);
+    }
+    @Test
+    void GetMovieInfoByYear() {
+        var uri = UriComponentsBuilder.fromUriString(MOVIE_INFO_URI)
+                        .queryParam("year", 1972)
+                        .buildAndExpand().toUri();
+        webTestClient
+                .get()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful()
                 .expectBodyList(MovieInfo.class)
-                .hasSize(4);
+                .hasSize(1);
     }
     @Test
     void addMovieInfo() {
