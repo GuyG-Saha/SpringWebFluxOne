@@ -73,6 +73,19 @@ class MovieInfoControllerIntgTest {
                 .hasSize(1);
     }
     @Test
+    void GetMovieInfoByName() {
+        var uri = UriComponentsBuilder.fromUriString(MOVIE_INFO_URI + "/filter")
+                .queryParam("name", "The Godfather I")
+                .buildAndExpand().toUri();
+        webTestClient
+                .get()
+                .uri(uri)
+                .exchange()
+                .expectStatus()
+                .is2xxSuccessful()
+                .expectBody(MovieInfo.class);
+    }
+    @Test
     void addMovieInfo() {
         var movieInfo = new MovieInfo("test1", "Pulp Fiction", 1994, List.of("Emma Thurman, John Travolta",
                 "Samuel L. Jackson", "Bruce Willis"), LocalDate.parse("1994-10-14"));

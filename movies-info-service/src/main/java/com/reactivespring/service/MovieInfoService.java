@@ -2,13 +2,10 @@ package com.reactivespring.service;
 
 import com.reactivespring.domain.MovieInfo;
 import com.reactivespring.repository.MovieInfoRepository;
-import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.Objects;
 
 @Service
 public class MovieInfoService {
@@ -39,5 +36,9 @@ public class MovieInfoService {
 
     public Flux<MovieInfo> findMovieInfoByYear(Integer year) {
         return movieInfoRepository.findByYear(year);
+    }
+
+    public Mono<MovieInfo> findMovieInfoByName(String name) {
+        return movieInfoRepository.findByName(name);
     }
 }

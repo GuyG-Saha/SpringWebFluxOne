@@ -49,4 +49,11 @@ public class MovieInfoRepositoryIntgTest {
                 .expectNextCount(1)
                 .verifyComplete();;
     }
+    @Test
+    void findByName() {
+        Mono<MovieInfo> movie = movieInfoRepository.findByName("The Godfather I").log();
+        StepVerifier.create(movie)
+                .expectNextCount(1)
+                .verifyComplete();;
+    }
 }
